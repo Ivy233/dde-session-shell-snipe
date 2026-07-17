@@ -54,6 +54,7 @@ bool isScaleConfigExists() {
     }
 }
 
+#ifndef ENABLE_DSS_SNIPE
 // 参照后端算法，保持一致
 float toListedScaleFactor(float s)  {
 	const float min = 1.0, max = 3.0, step = 0.25;
@@ -107,6 +108,7 @@ static double calcMaxScaleFactor(unsigned int width, unsigned int height) {
 
     return maxScale;
 }
+#endif
 
 static QStringList getScaleList()
 {
@@ -167,6 +169,7 @@ static QStringList getScaleList()
     return fscaleList;
 }
 
+#ifndef ENABLE_DSS_SNIPE
 static double getScaleFactor() {
     Display *display = XOpenDisplay(nullptr);
     double scaleFactor = 0.0;
@@ -221,6 +224,7 @@ static double getScaleFactor() {
 
     return scaleFactor;
 }
+#endif
 
 // 读取系统配置文件的缩放比，如果是null，默认返回1
 double getScaleFormConfig()
@@ -280,7 +284,7 @@ double getScaleFormConfig()
 static void setQtScaleFactorEnv() {
     double scaleFactor = 0.0;
 #ifdef ENABLE_DSS_SNIPE
-    scaleFactor = getScaleFactor();
+    scaleFactor = getScaleFormConfig();
 #else
     scaleFactor = IsWayland ? getScaleFormConfig() : getScaleFactor();
 #endif
